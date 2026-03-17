@@ -15,10 +15,23 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile     file("C:/Code/Apps/my-release-key.jks")
+            storePassword "your_store_password"
+            keyAlias      "smsexpensetracker"
+            keyPassword   "your_key_password"
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig    signingConfigs.release
+            minifyEnabled    false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig    signingConfigs.release
         }
     }
 
@@ -33,7 +46,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    // NOTE: core-ktx REMOVED — it's a Kotlin lib and causes crashes in pure Java projects
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
