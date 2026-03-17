@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_dialog_rounded"
+    android:padding="20dp">
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Cash Transaction"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#1565C0"
+        android:paddingBottom="12dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        android:layout_marginBottom="14dp"/>
+
+    <!-- Date Row -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DATE"
+        android:textSize="11sp"
+        android:textColor="#78909C"
+        android:textAllCaps="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp">
+
+        <EditText
+            android:id="@+id/etDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="none"
+            android:focusable="false"
+            android:backgroundTint="#1565C0"
+            android:textColor="#263238"
+            android:textSize="14sp"
+            android:hint="dd-MM-yyyy"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnPickDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pick"
+            android:backgroundTint="#1565C0"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"/>
+
+    </LinearLayout>
+
+    <!-- Time Row -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TIME"
+        android:textSize="11sp"
+        android:textColor="#78909C"
+        android:textAllCaps="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp">
+
+        <EditText
+            android:id="@+id/etTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="none"
+            android:focusable="false"
+            android:backgroundTint="#1565C0"
+            android:textColor="#263238"
+            android:textSize="14sp"
+            android:hint="HH:mm:ss"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnPickTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pick"
+            android:backgroundTint="#1565C0"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"/>
+
+    </LinearLayout>
+
+    <!-- Transaction Type -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TRANSACTION TYPE"
+        android:textSize="11sp"
+        android:textColor="#78909C"
+        android:textAllCaps="true" />
+
+    <RadioGroup
+        android:id="@+id/rgType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="12dp">
+
+        <RadioButton
+            android:id="@+id/rbCredit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Credited"
+            android:textColor="#2E7D32"
+            android:textStyle="bold"
+            android:buttonTint="#2E7D32"/>
+
+        <RadioButton
+            android:id="@+id/rbDebit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Debited"
+            android:textColor="#C62828"
+            android:textStyle="bold"
+            android:buttonTint="#C62828"/>
+
+    </RadioGroup>
+
+    <!-- Amount -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AMOUNT (Rs.)"
+        android:textSize="11sp"
+        android:textColor="#78909C"
+        android:textAllCaps="true" />
+
+    <EditText
+        android:id="@+id/etAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:backgroundTint="#1565C0"
+        android:textColor="#263238"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:hint="0.00"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Party -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PARTY / PERSON (optional)"
+        android:textSize="11sp"
+        android:textColor="#78909C"
+        android:textAllCaps="true" />
+
+    <EditText
+        android:id="@+id/etParty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textCapWords"
+        android:backgroundTint="#1565C0"
+        android:textColor="#263238"
+        android:textSize="14sp"
+        android:hint="e.g. Shop name, person"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Description -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DESCRIPTION (optional)"
+        android:textSize="11sp"
+        android:textColor="#78909C"
+        android:textAllCaps="true" />
+
+    <EditText
+        android:id="@+id/etAddDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minLines="2"
+        android:maxLines="3"
+        android:inputType="textMultiLine|textCapSentences"
+        android:backgroundTint="#1565C0"
+        android:textColor="#263238"
+        android:textSize="14sp"
+        android:hint="Enter a note..."
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/btnAddCancel"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="#546E7A"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnAddSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:backgroundTint="#1565C0"
+            android:textColor="#FFFFFF"/>
+
+    </LinearLayout>
+
+</LinearLayout>

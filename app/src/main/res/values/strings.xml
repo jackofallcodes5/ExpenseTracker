@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SMS Expense Tracker</string>
+    <string name="label_datetime">Date / Time</string>
+    <string name="label_amount">Amount</string>
+    <string name="label_type">Type</string>
+    <string name="label_party">Party (VPA / Merchant)</string>
+    <string name="label_reference">Reference / UTR</string>
+    <string name="label_description">Description (editable)</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_close">Close</string>
+    <string name="scanning">Scanning SMS messages...</string>
+    <string name="no_transactions">No bank transactions found</string>
+    <string name="permission_denied">SMS permission denied. Cannot read bank transactions.</string>
+    <string name="scan_complete">transactions imported!</string>
+    <string name="no_new_transactions">No new transactions found.</string>
+</resources>

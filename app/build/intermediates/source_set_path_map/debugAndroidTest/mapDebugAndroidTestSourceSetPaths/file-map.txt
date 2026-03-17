@@ -1,0 +1,6 @@
+com.example.smsexpensetracker.test.app-androidTest-0 C:\Code\Apps\SMSExpenseTracker\app\build\generated\res\resValues\androidTest\debug
+com.example.smsexpensetracker.test.app-mergeDebugAndroidTestResources-1 C:\Code\Apps\SMSExpenseTracker\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.example.smsexpensetracker.test.app-mergeDebugAndroidTestResources-2 C:\Code\Apps\SMSExpenseTracker\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.example.smsexpensetracker.test.app-debugAndroidTest-3 C:\Code\Apps\SMSExpenseTracker\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources
+com.example.smsexpensetracker.test.app-jetified-annotation-experimental-1.3.0-4 C:\Users\gaura\.gradle\caches\9.0-milestone-1\transforms\3c220b9ce55a201e73acea2d135e118e\transformed\jetified-annotation-experimental-1.3.0\res
+com.example.smsexpensetracker.test.app-jetified-core-1.5.0-5 C:\Users\gaura\.gradle\caches\9.0-milestone-1\transforms\f13977b859d381f2ecbff1a3f2cb3f9e\transformed\jetified-core-1.5.0\res

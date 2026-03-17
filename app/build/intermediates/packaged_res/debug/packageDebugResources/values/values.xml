@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorAccent">#FF6F00</color>
+    <color name="colorBackground">#F0F4F8</color>
+    <color name="colorCredited">#2E7D32</color>
+    <color name="colorDebited">#C62828</color>
+    <color name="colorPrimary">#1565C0</color>
+    <color name="colorPrimaryDark">#0D47A1</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorTextPrimary">#263238</color>
+    <color name="colorTextSecondary">#546E7A</color>
+    <string name="app_name">SMS Expense Tracker</string>
+    <string name="btn_close">Close</string>
+    <string name="btn_save">Save</string>
+    <string name="label_amount">Amount</string>
+    <string name="label_datetime">Date / Time</string>
+    <string name="label_description">Description (editable)</string>
+    <string name="label_party">Party (VPA / Merchant)</string>
+    <string name="label_reference">Reference / UTR</string>
+    <string name="label_type">Type</string>
+    <string name="no_new_transactions">No new transactions found.</string>
+    <string name="no_transactions">No bank transactions found</string>
+    <string name="permission_denied">SMS permission denied. Cannot read bank transactions.</string>
+    <string name="scan_complete">transactions imported!</string>
+    <string name="scanning">Scanning SMS messages...</string>
+    <style name="Theme.SMSExpenseTracker" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">#F0F4F8</item>
+    </style>
+</resources>
