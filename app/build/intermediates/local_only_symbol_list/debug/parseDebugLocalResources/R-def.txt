@@ -11,6 +11,7 @@ color colorTextPrimary
 color colorTextSecondary
 drawable bg_dialog_rounded
 drawable ic_launcher
+id adView
 id btnAddCancel
 id btnAddSave
 id btnClose

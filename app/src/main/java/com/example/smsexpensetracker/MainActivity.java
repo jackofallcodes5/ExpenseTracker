@@ -20,6 +20,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView             tvSummary;
     private FloatingActionButton fabRescan;
     private FloatingActionButton fabAddTransaction;
+    private AdView               adView;
 
     private DatabaseHelper    dbHelper;
     private List<Transaction> transactionList = new ArrayList<>();
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         bindViews();
         setupRecyclerView();
+        initAdMob();
 
         // Request SMS permission or handle first launch
         if (hasSMSPermission()) {
@@ -97,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        // Add Transaction FAB — opens manual entry dialog
+        // Add Transaction FAB — opens manual cash entry dialog
         if (fabAddTransaction != null) {
             fabAddTransaction.setOnClickListener(v -> {
                 AddTransactionDialog dialog = new AddTransactionDialog(
@@ -105,12 +110,51 @@ public class MainActivity extends AppCompatActivity {
                         dbHelper,
                         () -> {
                             loadFromDatabase();
-                            Toast.makeText(this, "Transaction added!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Transaction added!",
+                                    Toast.LENGTH_SHORT).show();
                         }
                 );
                 dialog.show();
             });
         }
+    }
+
+    // -------------------------------------------------------
+    // AdMob initialization
+    // -------------------------------------------------------
+
+    private void initAdMob() {
+        // Initialize the Mobile Ads SDK
+        MobileAds.initialize(this, initializationStatus ->
+                Log.d(TAG, "AdMob initialized: " + initializationStatus));
+
+        // Load banner ad
+        if (adView != null) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+        }
+    }
+
+    // -------------------------------------------------------
+    // AdMob lifecycle — pause/resume/destroy with Activity
+    // -------------------------------------------------------
+
+    @Override
+    protected void onPause() {
+        if (adView != null) adView.pause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adView != null) adView.resume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (adView != null) adView.destroy();
+        super.onDestroy();
     }
 
     // -------------------------------------------------------
@@ -140,10 +184,6 @@ public class MainActivity extends AppCompatActivity {
     // First launch
     // -------------------------------------------------------
 
-    /**
-     * On first install: automatically scan all SMS.
-     * On subsequent launches: just load from local database.
-     */
     private void handleFirstLaunch() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         boolean done = prefs.getBoolean(PREF_FIRST_LAUNCH, false);
@@ -163,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
         if (recyclerView == null) return;
 
         adapter = new TransactionAdapter(this, transactionList, transaction -> {
-            // Row click → open detail dialog
             try {
                 TransactionDialog dialog = new TransactionDialog(
                         this,
@@ -204,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /** Shows total count, total credited, total debited in the summary bar */
     private void updateSummaryBar() {
         if (tvSummary == null) return;
         double credit = 0, debit = 0;
@@ -239,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
         tvSummary         = findViewById(R.id.tvSummary);
         fabRescan         = findViewById(R.id.fabRescan);
         fabAddTransaction = findViewById(R.id.fabAddTransaction);
+        adView            = findViewById(R.id.adView);
     }
 
     private boolean hasSMSPermission() {
@@ -254,10 +293,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            if (layoutProgress != null) layoutProgress.setVisibility(View.VISIBLE);
-            if (fabRescan != null)      fabRescan.setEnabled(false);
+            if (layoutProgress != null)    layoutProgress.setVisibility(View.VISIBLE);
+            if (fabRescan != null)         fabRescan.setEnabled(false);
             if (fabAddTransaction != null) fabAddTransaction.setEnabled(false);
-            if (layoutEmpty != null)    layoutEmpty.setVisibility(View.GONE);
+            if (layoutEmpty != null)       layoutEmpty.setVisibility(View.GONE);
         }
 
         @Override

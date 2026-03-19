@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Only keep READ_SMS — remove RECEIVE_SMS since we don't use it -->
+    <!-- SMS permission for reading bank transactions -->
     <uses-permission android:name="android.permission.READ_SMS" />
+
+    <!-- Internet permission required by AdMob -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Required by AdMob for ad personalization checks -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -12,10 +18,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SMSExpenseTracker">
 
+        <!-- AdMob App ID -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-4195105056058261~4846325772"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -25,5 +36,3 @@
     </application>
 
 </manifest>
-
-
