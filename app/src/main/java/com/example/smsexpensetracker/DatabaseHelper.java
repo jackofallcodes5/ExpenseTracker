@@ -56,12 +56,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (oldVersion == 1 && newVersion == 2) {
             db.execSQL("ALTER TABLE " + TABLE_TRANSACTIONS
                     + " ADD COLUMN " + COL_SMS_DATE + " INTEGER DEFAULT 0");
+            Log.d(TAG, "Database upgraded: added sms_date column.");
         } else {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTIONS);
             onCreate(db);
         }
     }
 
+    // -------------------------------------------------------
+    // INSERT
+    // -------------------------------------------------------
+
+    /**
+     * Bulk insert — used on first launch to import full SMS history.
+     * Wrapped in a single SQLite transaction for maximum speed.
+     * Duplicates are automatically skipped via CONFLICT_IGNORE.
+     */
     public int insertTransactions(List<Transaction> transactions) {
         SQLiteDatabase db = this.getWritableDatabase();
         int count = 0;
@@ -82,16 +92,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    /** Inserts a single manually-added transaction. Returns row id or -1 on failure. */
+    /**
+     * Single insert — used by SMSReceiver for real-time incoming SMS
+     * and by AddTransactionDialog for manual cash entries.
+     * Returns row id or -1 if duplicate.
+     */
     public long insertSingleTransaction(Transaction t) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = buildContentValues(t);
         long rowId = db.insertWithOnConflict(TABLE_TRANSACTIONS, null, cv,
                 SQLiteDatabase.CONFLICT_IGNORE);
         db.close();
+        if (rowId != -1) {
+            Log.d(TAG, "Single insert success: " + t);
+        } else {
+            Log.d(TAG, "Single insert skipped (duplicate): sms_id=" + t.getSmsId());
+        }
         return rowId;
     }
 
+    // -------------------------------------------------------
+    // READ
+    // -------------------------------------------------------
+
+    /**
+     * Returns all transactions newest first.
+     * Primary sort: sms_date DESC (real SMS timestamp in epoch ms).
+     * Secondary sort: id DESC (insertion order fallback).
+     */
     public List<Transaction> getAllTransactions() {
         List<Transaction> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -112,6 +140,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * Returns total number of stored transactions.
+     * Useful for debugging.
+     */
+    public int getTransactionCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(*) FROM " + TABLE_TRANSACTIONS, null);
+        int count = 0;
+        if (cursor != null && cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+            cursor.close();
+        }
+        db.close();
+        return count;
+    }
+
+    // -------------------------------------------------------
+    // UPDATE
+    // -------------------------------------------------------
+
+    /**
+     * Updates the description for a specific transaction.
+     * Called when user edits description in TransactionDialog.
+     */
     public int updateDescription(int transactionId, String newDescription) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -121,6 +174,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return rows;
     }
+
+    // -------------------------------------------------------
+    // Helpers
+    // -------------------------------------------------------
 
     private ContentValues buildContentValues(Transaction t) {
         ContentValues cv = new ContentValues();

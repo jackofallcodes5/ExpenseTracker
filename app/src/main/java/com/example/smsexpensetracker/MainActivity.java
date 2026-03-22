@@ -31,9 +31,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG               = "MainActivity";
-    private static final int    REQUEST_READ_SMS  = 101;
-    private static final String PREFS_NAME        = "sms_tracker_prefs";
-    private static final String PREF_FIRST_LAUNCH = "first_launch_done";
+    private static final int    REQUEST_PERMISSIONS = 101;
+    private static final String PREFS_NAME          = "sms_tracker_prefs";
+    private static final String PREF_FIRST_LAUNCH   = "first_launch_done";
 
     private RecyclerView         recyclerView;
     private TransactionAdapter   adapter;
@@ -76,27 +76,33 @@ public class MainActivity extends AppCompatActivity {
         setupRecyclerView();
         initAdMob();
 
-        // Request SMS permission or handle first launch
-        if (hasSMSPermission()) {
+        // Request READ_SMS + RECEIVE_SMS together
+        if (hasAllPermissions()) {
             handleFirstLaunch();
         } else {
             ActivityCompat.requestPermissions(
                     this,
-                    new String[]{Manifest.permission.READ_SMS},
-                    REQUEST_READ_SMS
+                    new String[]{
+                            Manifest.permission.READ_SMS,
+                            Manifest.permission.RECEIVE_SMS
+                    },
+                    REQUEST_PERMISSIONS
             );
         }
 
-        // Reload FAB — re-scans SMS inbox
+        // Reload FAB — manually re-scans inbox for missed SMS
         if (fabRescan != null) {
             fabRescan.setOnClickListener(v -> {
-                if (hasSMSPermission()) {
+                if (hasAllPermissions()) {
                     new ImportSMSTask().execute();
                 } else {
                     ActivityCompat.requestPermissions(
                             this,
-                            new String[]{Manifest.permission.READ_SMS},
-                            REQUEST_READ_SMS
+                            new String[]{
+                                    Manifest.permission.READ_SMS,
+                                    Manifest.permission.RECEIVE_SMS
+                            },
+                            REQUEST_PERMISSIONS
                     );
                 }
             });
@@ -120,35 +126,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // -------------------------------------------------------
-    // AdMob initialization
+    // onResume — refresh list every time app comes to foreground
+    // This picks up any transactions saved by SMSReceiver
+    // while the app was in the background or closed
+    // -------------------------------------------------------
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Always reload from DB on resume —
+        // SMSReceiver may have saved new transactions while app was closed
+        if (dbHelper != null && adapter != null) {
+            loadFromDatabase();
+        }
+        if (adView != null) adView.resume();
+    }
+
+    // -------------------------------------------------------
+    // AdMob lifecycle
     // -------------------------------------------------------
 
     private void initAdMob() {
-        // Initialize the Mobile Ads SDK
         MobileAds.initialize(this, initializationStatus ->
-                Log.d(TAG, "AdMob initialized: " + initializationStatus));
-
-        // Load banner ad
+                Log.d(TAG, "AdMob initialized."));
         if (adView != null) {
             AdRequest adRequest = new AdRequest.Builder().build();
             adView.loadAd(adRequest);
         }
     }
 
-    // -------------------------------------------------------
-    // AdMob lifecycle — pause/resume/destroy with Activity
-    // -------------------------------------------------------
-
     @Override
     protected void onPause() {
         if (adView != null) adView.pause();
         super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (adView != null) adView.resume();
     }
 
     @Override
@@ -166,9 +176,15 @@ public class MainActivity extends AppCompatActivity {
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_READ_SMS) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQUEST_PERMISSIONS) {
+            boolean readSmsGranted = false;
+            for (int i = 0; i < permissions.length; i++) {
+                if (Manifest.permission.READ_SMS.equals(permissions[i])
+                        && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    readSmsGranted = true;
+                }
+            }
+            if (readSmsGranted) {
                 Toast.makeText(this, "Permission granted. Scanning...",
                         Toast.LENGTH_SHORT).show();
                 handleFirstLaunch();
@@ -181,16 +197,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // -------------------------------------------------------
-    // First launch
+    // First launch — full SMS scan only once
+    // After that, SMSReceiver handles everything in real time
     // -------------------------------------------------------
 
     private void handleFirstLaunch() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         boolean done = prefs.getBoolean(PREF_FIRST_LAUNCH, false);
         if (!done) {
+            // First install — scan full inbox to import history
             prefs.edit().putBoolean(PREF_FIRST_LAUNCH, true).apply();
             new ImportSMSTask().execute();
         } else {
+            // All subsequent launches — just load from DB instantly
+            // New SMS are already saved by SMSReceiver in background
             loadFromDatabase();
         }
     }
@@ -280,13 +300,20 @@ public class MainActivity extends AppCompatActivity {
         adView            = findViewById(R.id.adView);
     }
 
-    private boolean hasSMSPermission() {
+    // -------------------------------------------------------
+    // Permission helpers
+    // -------------------------------------------------------
+
+    /** Returns true only if BOTH READ_SMS and RECEIVE_SMS are granted */
+    private boolean hasAllPermissions() {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS)
+                == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)
                 == PackageManager.PERMISSION_GRANTED;
     }
 
     // -------------------------------------------------------
-    // AsyncTask — background SMS import
+    // AsyncTask — background full SMS import (first launch only)
     // -------------------------------------------------------
 
     private class ImportSMSTask extends AsyncTask<Void, Void, Integer> {

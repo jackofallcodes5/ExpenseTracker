@@ -1,30 +1,26 @@
 [
     {
-        "merged": "C:\\Users\\gaura\\.gradle\\daemon\\9.0-milestone-1\\com.example.smsexpensetracker.app-debug-4:\\layout_dialog_transaction.xml.flat",
-        "source": "C:\\Users\\gaura\\.gradle\\daemon\\9.0-milestone-1\\com.example.smsexpensetracker.app-main-6:\\layout\\dialog_transaction.xml"
+        "merged": "com.example.smsexpensetracker.app-debug-4:/drawable_ic_launcher.png.flat",
+        "source": "com.example.smsexpensetracker.app-main-6:/drawable/ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\gaura\\.gradle\\daemon\\9.0-milestone-1\\com.example.smsexpensetracker.app-debug-4:\\layout_activity_main.xml.flat",
-        "source": "C:\\Users\\gaura\\.gradle\\daemon\\9.0-milestone-1\\com.example.smsexpensetracker.app-main-6:\\layout\\activity_main.xml"
+        "merged": "com.example.smsexpensetracker.app-debug-4:/layout_item_transaction.xml.flat",
+        "source": "com.example.smsexpensetracker.app-main-6:/layout/item_transaction.xml"
+    },
+    {
+        "merged": "com.example.smsexpensetracker.app-debug-4:/layout_dialog_transaction.xml.flat",
+        "source": "com.example.smsexpensetracker.app-main-6:/layout/dialog_transaction.xml"
     },
     {
         "merged": "com.example.smsexpensetracker.app-debug-4:/layout_activity_main.xml.flat",
         "source": "com.example.smsexpensetracker.app-main-6:/layout/activity_main.xml"
     },
     {
-        "merged": "C:\\Users\\gaura\\.gradle\\daemon\\9.0-milestone-1\\com.example.smsexpensetracker.app-debug-4:\\drawable_ic_launcher.png.flat",
-        "source": "C:\\Users\\gaura\\.gradle\\daemon\\9.0-milestone-1\\com.example.smsexpensetracker.app-main-6:\\drawable\\ic_launcher.png"
+        "merged": "com.example.smsexpensetracker.app-debug-4:/drawable_bg_dialog_rounded.xml.flat",
+        "source": "com.example.smsexpensetracker.app-main-6:/drawable/bg_dialog_rounded.xml"
     },
     {
-        "merged": "C:\\Users\\gaura\\.gradle\\daemon\\9.0-milestone-1\\com.example.smsexpensetracker.app-debug-4:\\drawable_bg_dialog_rounded.xml.flat",
-        "source": "C:\\Users\\gaura\\.gradle\\daemon\\9.0-milestone-1\\com.example.smsexpensetracker.app-main-6:\\drawable\\bg_dialog_rounded.xml"
-    },
-    {
-        "merged": "C:\\Users\\gaura\\.gradle\\daemon\\9.0-milestone-1\\com.example.smsexpensetracker.app-debug-4:\\layout_item_transaction.xml.flat",
-        "source": "C:\\Users\\gaura\\.gradle\\daemon\\9.0-milestone-1\\com.example.smsexpensetracker.app-main-6:\\layout\\item_transaction.xml"
-    },
-    {
-        "merged": "C:\\Users\\gaura\\.gradle\\daemon\\9.0-milestone-1\\com.example.smsexpensetracker.app-debug-4:\\layout_dialog_add_transaction.xml.flat",
-        "source": "C:\\Users\\gaura\\.gradle\\daemon\\9.0-milestone-1\\com.example.smsexpensetracker.app-main-6:\\layout\\dialog_add_transaction.xml"
+        "merged": "com.example.smsexpensetracker.app-debug-4:/layout_dialog_add_transaction.xml.flat",
+        "source": "com.example.smsexpensetracker.app-main-6:/layout/dialog_add_transaction.xml"
     }
 ]
